@@ -1,3 +1,8 @@
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const fizzBuzz = (n) => {
   const FIZZ = ['Fizz', '', ''];
   const BUZZ = ['Buzz', '', '', '', ''];
@@ -5,14 +10,14 @@ const fizzBuzz = (n) => {
   return FIZZ[n % 3] + BUZZ[n % 5] || n;
 };
 
-process.stdin.on('data', function (input) {
-  var fn = input.toString().trim();
-
-  try {
-    console.log(eval(fn));
-  } catch {
-    console.log('Error!');
-  }
-});
-
-process.stdin.resume();
+let recursiveAsyncReadLine = () => {
+  readline.question('> ', (fn) => {
+    try {
+      console.log(eval(fn));
+    } catch {
+      console.log('Error!');
+    }
+    recursiveAsyncReadLine();
+  });
+};
+recursiveAsyncReadLine();

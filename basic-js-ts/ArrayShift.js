@@ -1,3 +1,8 @@
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const shift = (arr, direction, amounts) => {
   amounts = amounts % arr.length;
   firstArrayLength = direction === 'left' ? amounts : arr.length - amounts;
@@ -6,14 +11,14 @@ const shift = (arr, direction, amounts) => {
   return secondArr.concat(firstArr);
 };
 
-process.stdin.on('data', function (input) {
-  var fn = input.toString().trim();
-
-  try {
-    console.log(eval(fn));
-  } catch {
-    console.log('Error!');
-  }
-});
-
-process.stdin.resume();
+let recursiveAsyncReadLine = () => {
+  readline.question('> ', (fn) => {
+    try {
+      console.log(eval(fn));
+    } catch {
+      console.log('Error!');
+    }
+    recursiveAsyncReadLine();
+  });
+};
+recursiveAsyncReadLine();

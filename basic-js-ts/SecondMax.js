@@ -1,3 +1,8 @@
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const secondMax = (arr) => {
   if (arr.length === 0) {
     return 'Error!';
@@ -15,14 +20,14 @@ const secondMax = (arr) => {
   return second === Number.MIN_VALUE ? first : second;
 };
 
-process.stdin.on('data', function (input) {
-  var fn = input.toString().trim();
-
-  try {
-    console.log(eval(fn));
-  } catch {
-    console.log('Error!');
-  }
-});
-
-process.stdin.resume();
+let recursiveAsyncReadLine = () => {
+  readline.question('> ', (fn) => {
+    try {
+      console.log(eval(fn));
+    } catch {
+      console.log('Error!');
+    }
+    recursiveAsyncReadLine();
+  });
+};
+recursiveAsyncReadLine();

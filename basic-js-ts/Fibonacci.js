@@ -1,3 +1,8 @@
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const fib = (n) => {
   let prev = 1;
   let next = 1;
@@ -11,14 +16,14 @@ const fib = (n) => {
   return prev;
 };
 
-process.stdin.on('data', function (input) {
-  var fn = input.toString().trim();
-
-  try {
-    console.log(eval(fn));
-  } catch {
-    console.log('Error!');
-  }
-});
-
-process.stdin.resume();
+let recursiveAsyncReadLine = () => {
+  readline.question('> ', (fn) => {
+    try {
+      console.log(eval(fn));
+    } catch {
+      console.log('Error!');
+    }
+    recursiveAsyncReadLine();
+  });
+};
+recursiveAsyncReadLine();
