@@ -1,3 +1,8 @@
+const deleteOne = async (db, collectionName, query_filter) => {
+  let result = await db.collection(collectionName).deleteOne(query_filter);
+  return result;
+};
+
 const find = async (db, collectionName, query_filter, skip = 0, limit = 0) => {
   let result = await db
     .collection(collectionName)
@@ -37,4 +42,11 @@ const updateOne = async (db, collectionName, query_filter, update_object) => {
   return result;
 };
 
-module.exports = { find, findOneAndUpdate, findOne, insertOne, updateOne };
+module.exports = {
+  deleteOne,
+  find,
+  findOneAndUpdate,
+  findOne,
+  insertOne,
+  updateOne,
+};

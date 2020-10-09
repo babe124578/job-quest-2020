@@ -30,8 +30,8 @@ MongoClient.connect(uri, {
     });
 
     app.post('/jokes', async (req, res) => {
-      username = req.headers.username;
-      password = req.headers.password;
+      let username = req.headers.username;
+      let password = req.headers.password;
       let text = req.body.text;
       if (text === undefined) {
         res
@@ -41,17 +41,10 @@ MongoClient.connect(uri, {
         return;
       }
       let data = await jokeRepo.addJoke(db, text, username, password);
-      let result =
-        data === 401
-          ? {
-              status_code: 401,
-              data: { error: 'Username or password incorrect' },
-            }
-          : { status_code: 201, data: { status: 'success' } };
       res
-        .status(result.status_code)
+        .status(data.status_code)
         .set('Content-Type', 'application/json')
-        .send(result.data);
+        .send(data.data);
     });
 
     app.get('/jokes/:id', async (req, res) => {
@@ -64,7 +57,17 @@ MongoClient.connect(uri, {
         .send(data);
     });
 
-    app.delete('/jokes/:id', async (req, res) => {});
+    app.delete('/jokes/:id', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
+
+      let data = await jokeRepo.deleteJoke(db, id, username, password);
+      res
+        .status(data.status_code)
+        .set('Content-Type', 'application/json')
+        .send(data.data);
+    });
 
     app.post('/jokes/:id/like', async (req, res) => {});
 

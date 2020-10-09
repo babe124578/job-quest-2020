@@ -6,7 +6,10 @@ const addJoke = async (database, text, username, password) => {
     password: password,
   });
   if (user_id === null) {
-    return 401;
+    return {
+      status_code: 401,
+      data: { error: 'Username or password incorrect' },
+    };
   }
   let next_sequence = await _getNextSequenceValue(
     database,
@@ -21,7 +24,32 @@ const addJoke = async (database, text, username, password) => {
     likes_by_user_ids: [],
   };
   let data = await mongoAdapter.insertOne(database, 'jokes', insert_object);
-  return data;
+  return { status_code: 201, data: { status: 'Success' } };
+};
+
+const deleteJoke = async (database, id, username, password) => {
+  let user_id = await mongoAdapter.findOne(database, 'users', {
+    username: username,
+    password: password,
+  });
+  if (user_id === null) {
+    return {
+      status_code: 401,
+      data: { error: 'Username or password incorrect' },
+    };
+  }
+
+  let data = await mongoAdapter.deleteOne(database, 'jokes', {
+    _id: id,
+    created_by_user_id: user_id.id,
+  });
+  if (data.deletedCount === 0) {
+    return {
+      status_code: 404,
+      data: { error: 'This joke not belong to you or not found this joke' },
+    };
+  }
+  return { status_code: 200, data: { status: 'Success' } };
 };
 
 const getAllJokes = async (database) => {
@@ -50,4 +78,4 @@ const _getNextSequenceValue = async (
   return next_sequence.value.sequence_value + 1;
 };
 
-module.exports = { addJoke, getAllJokes, getJoke };
+module.exports = { addJoke, deleteJoke, getAllJokes, getJoke };
