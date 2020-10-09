@@ -4,6 +4,7 @@
   "description": "backend for job quest 2020",
   "main": "index.js",
   "scripts": {
+    "start": "./node_modules/.bin/nodemon -L index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,7 +18,9 @@
   },
   "homepage": "https://github.com/babe124578/job-quest-2020#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "express-jsonschema": "^1.1.6",
     "mongodb": "^3.6.2"
   },
   "devDependencies": {
