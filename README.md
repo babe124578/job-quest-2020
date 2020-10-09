@@ -5,6 +5,7 @@ Thank you for your interest in working at TakeMeTour. First, we would like to ta
 Please fork this repo and work on the test. After finishing the test, please send your repo to benz@takemetour.com (Subject: JavaScript Engineer Application). Or you can simply reply an email that we've send you job quest link.
 
 This quest has 3 parts
+
 - **Basic JavaScript/TypeScript + Algorithm** (Any job position **must** do this part)
 - **Front-end** (Only **Front-end** or **Full-stack** position **must** do this part)
 - **Back-end** (Only **Back-end** or **Full-stack** position **must** do this part)
@@ -83,14 +84,13 @@ Error!
 
 **BUT we're not allow you to use `if/else` statement.** If there is any `if` or `else` word in your code. I will consider this question with 0 score :(
 
-
 **Example**
 
 ```javascript
 > fizzBuzz(21)
 Fizz
 
-> fizzBuzz(18)
+> fizzBuzz(25)
 Buzz
 
 > fizzBuzz(45)
@@ -104,16 +104,19 @@ You are going to make a web application written with **React** which allow users
 > Chuck Norris once ordered a Big Mac at Burger King, and got one.
 
 ### Features
+
 - Users can get a joke from [Chuck Norris API](http://www.icndb.com/api/)
 - Users has options to change number of result jokes, user's first name and last name
 - How to display the result is up to you.
 
 ### Technical description
+
 - Using data from [REST API](http://www.icndb.com/api/)
 - Using React to build the apps. (Create React Apps / Pure Webpack setup / Next.js is fine to me)
 - We allows you to use any CSS framework. (Or you don't want to use that, also OK to me)
 
 ### Bonus
+
 - You can surprise me with any extra features from my requirement. Use your imagination!
 
 ### Front-end Questions
@@ -122,7 +125,7 @@ You are going to make a web application written with **React** which allow users
 
 2. Today React have hooks. Do we still need a class component? If your answer is yes then which case that we still need to use class component.
 
-3. Breifly describe how *Virtual DOM* works.
+3. Breifly describe how _Virtual DOM_ works.
 
 4. Consider this React's components tree
 
@@ -143,6 +146,7 @@ You are going to made a simple **Thai's joke API**. And this API is follow to RE
 Thai's joke API can allow user to explore, add, delete, like or dislike Thai's joke.
 
 ### Endpoints
+
 - `GET /` Get all jokes.
 - `POST /` Add new joke.
 - `GET /:id` Get joke by id.
@@ -151,10 +155,12 @@ Thai's joke API can allow user to explore, add, delete, like or dislike Thai's j
 - `POST /:id/dislike` Dislike a joke. (Same as above. Dislike spaming is fine here.)
 
 ### Technical description
+
 - All data must store to the database. Any database is fine. But we prefer **MongoDB**.
 - Back-end code must written in Node.js. Any library or helper tools is up to you (Express / Koa / Nest.js you name it).
 
 ### Bonus
+
 - If you implemented simple authentication with username and password, and also allow logged-in user to create or delete the joke. You will get a bonus for this task.
 
 ### Back-end Questions
