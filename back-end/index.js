@@ -69,9 +69,29 @@ MongoClient.connect(uri, {
         .send(data.data);
     });
 
-    app.post('/jokes/:id/like', async (req, res) => {});
+    app.post('/jokes/:id/like', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
 
-    app.post('/jokes/:id/dislike', async (req, res) => {});
+      let data = await jokeRepo.likeJoke(db, id, username, password);
+      res
+        .status(data.status_code)
+        .set('Content-Type', 'application/json')
+        .send(data.data);
+    });
+
+    app.post('/jokes/:id/dislike', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
+
+      let data = await jokeRepo.dislikeJoke(db, id, username, password);
+      res
+        .status(data.status_code)
+        .set('Content-Type', 'application/json')
+        .send(data.data);
+    });
 
     app.use(function (err, req, res, next) {
       var responseData;

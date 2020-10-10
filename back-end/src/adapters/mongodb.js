@@ -38,7 +38,7 @@ const insertOne = async (db, collectionName, insert_object) => {
 const updateOne = async (db, collectionName, query_filter, update_object) => {
   let result = await db
     .collection(collectionName)
-    .updateOne(query_filter, { $set: update_object });
+    .updateOne(query_filter, update_object);
   return result;
 };
 
