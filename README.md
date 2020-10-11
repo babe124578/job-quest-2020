@@ -15,6 +15,7 @@
 
 - This project created by [ExpressJS](https://expressjs.com/) and [MongoDB](https://www.mongodb.com/)
 - The service above wrapped by Docker and using docker-compose to run.
+- I've implement simple login system and register route
 
 ---
 
@@ -46,7 +47,7 @@
   - If cannot access it please contact me. (Maybe I just stop instance due to instance cost)
 - You can click on GET route to see example.
 - For other method please use `curl` or ` postman`
-- **For route POST and DELETE. User must provide `username` and `password` in Header**
+- **For route with method POST and DELETE. User must provide `username` and `password` in Header**
   - Format will be like this :
     ```json
     {
