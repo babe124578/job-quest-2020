@@ -90,7 +90,13 @@ const getAllJokes = async (database) => {
 
 const getJoke = async (database, id) => {
   let data = await mongoAdapter.findOne(database, 'jokes', { _id: id });
-  return data;
+  if (data === null) {
+    return {
+      status_code: 404,
+      data: { error: `Joke with id ${id} not found!` },
+    };
+  }
+  return { status_code: 200, data: data };
 };
 
 const likeJoke = async (database, id, username, password) => {
@@ -124,6 +130,39 @@ const likeJoke = async (database, id, username, password) => {
   return { status_code: 200, data: { status: 'Like success' } };
 };
 
+const register = async (database, username, password) => {
+  let next_sequence = await _getNextSequenceValue(
+    database,
+    'counters',
+    'user_id'
+  );
+
+  let insert_object = {
+    _id: username,
+    id: next_sequence,
+    username: username,
+    password: password,
+  };
+  try {
+    await mongoAdapter.insertOne(database, 'users', insert_object);
+    return { status_code: 201, data: { status: 'Register success' } };
+  } catch (err) {
+    if (err.name === 'MongoError') {
+      let query_filter = { _id: 'user_id' };
+      let update_filter = { $inc: { sequence_value: -1 } };
+      await mongoAdapter.findOneAndUpdate(
+        database,
+        'counters',
+        query_filter,
+        update_filter
+      );
+      return { status_code: 409, data: { error: 'Username already exists' } };
+    } else {
+      return { status_code: 500, data: { error: 'Internal server error' } };
+    }
+  }
+};
+
 const _getNextSequenceValue = async (
   database,
   collectionName,
@@ -147,4 +186,5 @@ module.exports = {
   getAllJokes,
   getJoke,
   likeJoke,
+  register,
 };

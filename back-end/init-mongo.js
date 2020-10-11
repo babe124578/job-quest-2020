@@ -2,6 +2,10 @@ var db = connect('mongodb://root:password@localhost:27017/admin');
 
 db = db.getSiblingDB('job-quest');
 
+db.counters.drop();
+db.jokes.drop();
+db.users.drop();
+
 db.createCollection('counters');
 db.createCollection('jokes');
 db.createCollection('users');
@@ -46,8 +50,8 @@ db.counters.insertMany([
   },
 ]);
 
-db.createUser({
-  user: 'job-quest',
-  pwd: 'job-quest',
-  roles: [{ role: 'root', db: 'admin' }],
-});
+// db.createUser({
+//   user: 'job-quest',
+//   pwd: 'job-quest',
+//   roles: [{ role: 'root', db: 'admin' }],
+// });

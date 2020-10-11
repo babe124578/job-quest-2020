@@ -7,9 +7,7 @@ const { MongoClient } = require('mongodb');
 const uri = 'mongodb://root:password@back-end_mongo_1:27017/admin';
 
 const jokeRepo = require('./src/repositories/jokes');
-const mongoAdapter = require('./src/adapters/mongodb');
-const { text } = require('body-parser');
-
+const { addJokeSchema, registerSchema } = require('./src/utilities/schema');
 MongoClient.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,78 +18,85 @@ MongoClient.connect(uri, {
 
     app.use(bodyParser.json());
 
-    app.get('/jokes', async (req, res) => {
-      let data = await jokeRepo.getAllJokes(db);
-      let status_code = data.length === 0 ? 204 : 200;
+    app.get('/', async (req, res) => {
+      let jokes = await jokeRepo.getAllJokes(db);
+      let status_code = jokes.length === 0 ? 204 : 200;
       res
         .status(status_code)
         .set('Content-Type', 'application/json')
-        .send(data);
+        .send(jokes);
     });
 
-    app.post('/jokes', async (req, res) => {
+    app.post('/', validate({ body: addJokeSchema }), async (req, res) => {
       let username = req.headers.username;
       let password = req.headers.password;
       let text = req.body.text;
-      if (text === undefined) {
+      let response = await jokeRepo.addJoke(db, text, username, password);
+      res
+        .status(response.status_code)
+        .set('Content-Type', 'application/json')
+        .send(response.data);
+    });
+
+    app.get('/:id', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let joke = await jokeRepo.getJoke(db, id);
+      res
+        .status(joke.status_code)
+        .set('Content-Type', 'application/json')
+        .send(joke.data);
+    });
+
+    app.delete('/:id', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
+
+      let response = await jokeRepo.deleteJoke(db, id, username, password);
+      res
+        .status(response.status_code)
+        .set('Content-Type', 'application/json')
+        .send(response.data);
+    });
+
+    app.post('/:id/like', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
+
+      let response = await jokeRepo.likeJoke(db, id, username, password);
+      res
+        .status(response.status_code)
+        .set('Content-Type', 'application/json')
+        .send(response.data);
+    });
+
+    app.post('/:id/dislike', async (req, res) => {
+      let id = parseInt(req.params.id);
+      let username = req.headers.username;
+      let password = req.headers.password;
+
+      let response = await jokeRepo.dislikeJoke(db, id, username, password);
+      res
+        .status(response.status_code)
+        .set('Content-Type', 'application/json')
+        .send(response.data);
+    });
+
+    app.put(
+      '/register',
+      validate({ body: registerSchema }),
+      async (req, res) => {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        let response = await jokeRepo.register(db, username, password);
         res
-          .status(400)
+          .status(response.status_code)
           .set('Content-Type', 'application/json')
-          .send({ error: 'Cannot find any text in body' });
-        return;
+          .send(response.data);
       }
-      let data = await jokeRepo.addJoke(db, text, username, password);
-      res
-        .status(data.status_code)
-        .set('Content-Type', 'application/json')
-        .send(data.data);
-    });
-
-    app.get('/jokes/:id', async (req, res) => {
-      let id = parseInt(req.params.id);
-      let data = await jokeRepo.getJoke(db, id);
-      let status_code = data.length === 0 ? 404 : 200;
-      res
-        .status(status_code)
-        .set('Content-Type', 'application/json')
-        .send(data);
-    });
-
-    app.delete('/jokes/:id', async (req, res) => {
-      let id = parseInt(req.params.id);
-      let username = req.headers.username;
-      let password = req.headers.password;
-
-      let data = await jokeRepo.deleteJoke(db, id, username, password);
-      res
-        .status(data.status_code)
-        .set('Content-Type', 'application/json')
-        .send(data.data);
-    });
-
-    app.post('/jokes/:id/like', async (req, res) => {
-      let id = parseInt(req.params.id);
-      let username = req.headers.username;
-      let password = req.headers.password;
-
-      let data = await jokeRepo.likeJoke(db, id, username, password);
-      res
-        .status(data.status_code)
-        .set('Content-Type', 'application/json')
-        .send(data.data);
-    });
-
-    app.post('/jokes/:id/dislike', async (req, res) => {
-      let id = parseInt(req.params.id);
-      let username = req.headers.username;
-      let password = req.headers.password;
-
-      let data = await jokeRepo.dislikeJoke(db, id, username, password);
-      res
-        .status(data.status_code)
-        .set('Content-Type', 'application/json')
-        .send(data.data);
-    });
+    );
 
     app.use(function (err, req, res, next) {
       var responseData;
