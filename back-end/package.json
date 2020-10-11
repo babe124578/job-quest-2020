@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/nodemon -L index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "docker exec back-end_mongo_1 mongo init-mongo.js",
+    "test": "newman run tests/job-quest.postman_collection.json -e tests/Local.postman_environment.json",
+    "posttest": "docker exec back-end_mongo_1 mongo init-mongo.js"
   },
   "repository": {
     "type": "git",

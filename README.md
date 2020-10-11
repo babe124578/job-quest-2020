@@ -1,188 +1,172 @@
-# TakeMeTour's Job Quest 2020 Edition
+# Section 1: basic-js-ts
 
-Thank you for your interest in working at TakeMeTour. First, we would like to take a simple test on your coding skill.
+## Notes
 
-Please fork this repo and work on the test. After finishing the test, please send your repo to benz@takemetour.com (Subject: JavaScript Engineer Application). Or you can simply reply an email that we've send you job quest link.
+    - All contents of this part are in folder basic-js-ts
 
-This quest has 3 parts
+# Section 2: Back-End (Thai jokes)
 
-- **Basic JavaScript/TypeScript + Algorithm** (Any job position **must** do this part)
-- **Front-end** (Only **Front-end** or **Full-stack** position **must** do this part)
-- **Back-end** (Only **Back-end** or **Full-stack** position **must** do this part)
+## Requirement
 
-**Note:** Some answers can be answer in Thai language.
+- [Docker](https://www.docker.com/) and `docker-compose`
+- [node](https://nodejs.org) (This project use node 12.16.1)
 
-## Basic JavaScript/TypeScript + Algorithm
+## Description
 
-We would like to test your basic knowledge on writing JavaScript or TypeScript, plus we also want to test your algorithm skill a little bit.
+- This project created by [ExpressJS](https://expressjs.com/) and [MongoDB](https://www.mongodb.com/)
+- The service above wrapped by Docker and using docker-compose to run.
 
-What you need to do is write the code that solve each question and put it in folder `basic-js-ts`. We will run your code with **Node.js 12**, so check your fancy feature before using it!
+---
 
-**Noted that all questions on this part need to be implemented without using any external library like `lodash`**
+## To run this project
 
-1. **Fibonacci Sequence**: Write a function `fib` that return the value of n-th order of fibonacci sequence.
+1.  Go to /back-end
+2.  Run `docker-compose up -d --build`
+3.  Access the API using browser `(localhost or 127.0.0.1)` method _GET_ only
+4.  Access the API with other method [GET, POST, PUT, DELETE] use `curl` or postman application.
 
-In mathematics, the Fibonacci numbers are the numbers in the following integer sequence, called the Fibonacci sequence, and characterized by the fact that every number after the first two is the sum of the two preceding ones:
+## To test this project
 
-```
-1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, ...
-```
+1.  Start project with previous sub-section
+2.  Run `npm install`
+3.  Run `npm test`
+    - This will be tested by [newman](https://www.npmjs.com/package/newman)
+4.  Or use **`runner`** in [Postman](https://www.postman.com/) to test the API
 
-**Example**
+---
 
-```javascript
-> fib(1)
-1
+## Endpoint
 
-> fib(3)
-2
+- For local use
+  - Run on http://localhost or http://127.0.0.1 port 80
+  - e.g. http://localhost/1
+- For on server
+  - Run on http://13.229.236.171 port 80
+  - e.g. http://13.229.236.171/1
+  - If cannot access it please contact me. (Maybe I just stop instance due to instance cost)
+- You can click on GET route to see example.
+- For other method please use `curl` or ` postman`
+- **For route POST and DELETE. User must provide `username` and `password` in Header**
+  - Format will be like this :
+    ```json
+    {
+      "username": "<user username>",
+      "password": "<user password>"
+    }
+    ```
+  - Import postman_collection in folder back-end/tests to see example
 
-> fib(12)
-144
-```
+#### 1. [GET `/`](http://19.229.236.171)
 
-2. **Array shift**: Write a function `shift` that shifts the elements of array to left or right by n elements in an infinite loop.
+    Get all jokes
 
-The function receives 3 parameters, 1st is an array, 2nd is the direction ('left' or 'right'), 3rd is the number of elements which will be shifted. For example,
+#### 2. POST `/`
 
-**Example**
+    Add new joke by add below in body.
 
-```javascript
-> shift(['john', 'jane', 'sarah', 'alex'], 'left', 2)
-['sarah', 'alex', 'john', 'jane']
-
-> shift([1, 2, 3, 4 ,5], 'right', 3)
-[3, 4, 5, 1, 2]
-```
-
-3. **Second max**: Write a function `secondMax` that receive an array of number. The function will return the second maximum value of the array. If there is no second max, return max instead. If an array is empty, throw and error.
-
-**Example**
-
-```javascript
-> secondMax([2, 3, 4, 5])
-4
-
-> secondMax([9, 2, 21, 21])
-9
-
-> secondMax([4, 4, 4, 4])
-4
-
-> secondMax([4123])
-4123
-
-> secondMax([])
-Error!
+```json
+{
+  "text": "<Joke text here.>"
+}
 ```
 
-4. **FizzBuzz...But**: You may heard `FizzBuzz` task. Here we have the same rule. You will write a function `fizzBuzz` that receive a single parameter it will return the value base on these rule.
+#### 3. [GET `/:id`](http://19.229.236.171/1)
 
-- If the input is divisable by 3, return 'Fizz'
-- If the input is divisable by 5, return 'Buzz'
-- If the input is divisable by both 3 and 5, return 'FizzBuzz'
+    Get one joke with provided id
 
-**BUT we're not allow you to use `if/else` statement.** If there is any `if` or `else` word in your code. I will consider this question with 0 score :(
+#### 4. DELETE `/:id`
 
-**Example**
+    Delete one joke with provided id
 
-```javascript
-> fizzBuzz(21)
-Fizz
+#### 5. POST `/:id/like`
 
-> fizzBuzz(25)
-Buzz
+    Like one joke with provided id
 
-> fizzBuzz(45)
-FizzBuzz
+#### 6. POST `/:id/dislike`
+
+    Dislike one joke with provided id
+
+#### 7. PUT `/register`
+
+    Register new user with provided username and password by add below in body.
+
+```json
+{
+  "username": "<New username>",
+  "password": "<New password>"
+}
 ```
 
-## Front-End
-
-You are going to make a web application written with **React** which allow users to get some joke from **Chuck Norris**. His joke look like this.
-
-> Chuck Norris once ordered a Big Mac at Burger King, and got one.
-
-### Features
-
-- Users can get a joke from [Chuck Norris API](http://www.icndb.com/api/)
-- Users has options to change number of result jokes, user's first name and last name
-- How to display the result is up to you.
-
-### Technical description
-
-- Using data from [REST API](http://www.icndb.com/api/)
-- Using React to build the apps. (Create React Apps / Pure Webpack setup / Next.js is fine to me)
-- We allows you to use any CSS framework. (Or you don't want to use that, also OK to me)
-
-### Bonus
-
-- You can surprise me with any extra features from my requirement. Use your imagination!
-
-### Front-end Questions
-
-1. Explain the what's similar & difference between `cookie` / `localStorage` / `sessionStorage`.
-
-2. Today React have hooks. Do we still need a class component? If your answer is yes then which case that we still need to use class component.
-
-3. Breifly describe how _Virtual DOM_ works.
-
-4. Consider this React's components tree
-
-```
-Apps > ComponentA > ComponentB > ComponentC > ComponentD > ComponentE
-```
-
-If we have a state at `Apps` component, and `ComponentE` component want to access that state value. How do you implements this?
-
-5. What different between using `relative` / `absolute` / `fixed` to position the element.
-
-6. Explain the different between using `callback` / `Promise` / `async await`. When to use and when not to.
-
-## Back-End
-
-You are going to made a simple **Thai's joke API**. And this API is follow to REST API pattern.
-
-Thai's joke API can allow user to explore, add, delete, like or dislike Thai's joke.
-
-### Endpoints
-
-- `GET /` Get all jokes.
-- `POST /` Add new joke.
-- `GET /:id` Get joke by id.
-- `DELETE /:id` Delete joke. (In case you hate it)
-- `POST /:id/like` Like a joke. (Because we don't have authentication system yet. Like spaming is fine here.)
-- `POST /:id/dislike` Dislike a joke. (Same as above. Dislike spaming is fine here.)
-
-### Technical description
-
-- All data must store to the database. Any database is fine. But we prefer **MongoDB**.
-- Back-end code must written in Node.js. Any library or helper tools is up to you (Express / Koa / Nest.js you name it).
-
-### Bonus
-
-- If you implemented simple authentication with username and password, and also allow logged-in user to create or delete the joke. You will get a bonus for this task.
-
-### Back-end Questions
+# Section 3: Back-End Question
 
 1. Explain First-party cookie & Third-party cookie
-
+   - First-party-cookie is the cookie that created under visited website domain.
+     - e.g. visit facebook.com will receive first-party-cookie that created by facebook
+   - Third-party-cookie is the cookie that created by other domain maybe its come from image, iframe or javascript which load from another websites.
+     - example -> Visit facebook.com and facebook have advertisement from Lazada, so we can receive cookie from lazada.com as a third-party-cookie
 2. Explain CAP Theorem.
 
-3. Considering two queries
+   - CAP Theorm is the theorm about the impossible for distributed data store to provide more following than two guarantees at the same time.
+     - `C`onsistency => Every read will receive most recent write or error only.
+     - `A`vailability => Every request will receive non-error response but not guarantee that is mose recent write
+     - `P`artition tolerance => System can operate even if any node down
+   - For CA pair is for RDBMS which has high Consistency, Availability but no Partition tolerance
+   - For P. If system failure the system (or us) should decide to
+     - Cancel the operation that means no Availability but ensure Consistency.
+     - Continue the operation that means still have Availability but lack of Consistency.
 
-```javascript
-const searchIds = ['1', '2', '3', ...];
+3. Considering two queries, Which one is faster.
 
-const query1 = await Product.find({ id: { $in: searchIds } });
+   ```javascript
+      const searchIds = ['1', '2', '3', ...];
 
-const query2 = await Promise.all(searchIds.map(searchId => Product.find({ id: searchId })));
-```
+      const query1 = await Product.find({ id: { \$in: searchIds } });
 
-Which one is faster.
+      const query2 = await Promise.all(searchIds.map(searchId => Product.find({ id: searchId })));
+   ```
+
+   - `query1` is faster becaure command find in node mongodb will return cursor which is like an instance and meta of output. user must do something with the cursor e.g. .toArray() or .forEach() or any array method to retrive data from database.
 
 4. Explain XSS / SQL Injection / Man in the Middle Attack, and how to prevent each attack type.
 
+   - XSS => Cross Site Scripting is the way that attacker attack by send script to the webpage using some Vulnerability.
+     - e.g. website has `<div>`input text`</div>`, so the attacker can input some script directly e.g. type `<script/>` directly to the search field.
+     - To prevent OWASP has 4 suggestion
+       - Use framework which have ability to prevent automaticaly (ruby on rail, reactJS)
+       - Prevent using request data to show as HTML output
+       - Use encoding
+       - Open Content Security Policy(CSP) -> so server can setup that website can retrive data from specify source only.
+   - SQL Injection => Is the way that attacker attack by input sql command on UI to retrive data from SQL database(or DEOP, DELETE etc.)
+     - e.g. SQL is SELECT \* FROM user WHERE \$userid
+     - Attacker can use 1 OR 1=1 in userid field since OR 1=1 always true. So the database will return all row to trhe attacker.
+     - To prevent that a way from w3school is to use SQL Parameter
+     ```SQL
+     txtUserId = getRequestString("UserId");
+     txtSQL = "SELECT * FROM Users WHERE UserId = @0";
+     db.Execute(txtSQL,txtUserId);
+     ```
+     - The parameter represent by @
+     - The SQL engine checks each parameter to ensure that it is correct for its column and are treated literally, and not as part of the SQL to be executed.
+   - Man in the middle attack => Means someone (attacker) trying to sniff or modify the packet between sender and receiver.
+     - To prevent it should be encryption the packet or use SSL
+
 5. Explain the different between using `callback` / `Promise` / `async await`. When to use and when not to.
 
+   - Callback is a function that is passed to another function. When the first function done it will run secone function.
+     - Problem is callback can create "Callback Hell" which is nesting function in function in function ...
+     - Promise can help Callback Hell
+   - Promise is guarantee that will resolved in the future or rejected
+     - Promise is an obj and has 3 states: Pending, Resolved, Rejected e.g. request data from server, it will be in pending until receive or reject data.
+     - Promise has side effect is Chaining, code will be hard to read if promise have many .then() chaining
+   - Async/Await act like promise but more human readable
+   - Callback should use in situation that your function maybe use multiple times.
+   - Promise,Async/Await should use when need consistency such as API
+   - Promise shouldn't use when the action often does not finish or occur because promise is an object with state and thus its consume a lot of memory. That can cause insufficient memory usage.
+
 6. Explain how HTTP protocol works.
+   1. Browser(client) uses TCP/IP protocol to connect to web server.
+   2. Browser sends HTTP request using connection from 1st step.
+   3. Server receives HTTP request.
+   4. Server responses with HTTP response.
+   5. Browser receives HTTP response.
+   6. Browser render HTTP response.

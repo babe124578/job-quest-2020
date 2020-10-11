@@ -1,0 +1,1085 @@
+{
+	"info": {
+		"_postman_id": "4b3ffd25-5220-46f2-8b63-7555e6c2b25d",
+		"name": "job-quest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET / (Get all jokes)",
+			"item": [
+				{
+					"name": "When I get all jokes, I should get joke with field _id, text, created_by_user_id and likes_by_user_ids",
+					"item": [
+						{
+							"name": "Get all joke success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f2bcf429-4209-4df6-a0ba-ee3bdf69482f",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response  should be 'array'\", function () {\r",
+											"    pm.expect(jsonData).to.be.a(\"array\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should have field '_id'\", function () {\r",
+											"    pm.expect(jsonData[0]).to.have.property(\"_id\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should have field 'text'\", function () {\r",
+											"    pm.expect(jsonData[0]).to.have.property(\"text\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should have field 'created_by_user_id'\", function () {\r",
+											"    pm.expect(jsonData[0]).to.have.property(\"created_by_user_id\")\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should have field 'likes_by_user_ids'\", function () {\r",
+											"    pm.expect(jsonData[0]).to.have.property(\"likes_by_user_ids\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "cfd1221f-57a6-421a-9203-666ff2194959",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}",
+									"host": [
+										"{{HOST}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST / (Add new joke)",
+			"item": [
+				{
+					"name": "When user1 which id is 2 add a new joke, it should has _id equal to 3 and created_by_user_id 2 and likes is empty",
+					"item": [
+						{
+							"name": "Check no joke id 3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "65328f6f-6626-4010-8f1a-5e6b31ce2478",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"error\": \"Joke with id 3 not found!\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should equal to expected_response\", function () {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/3",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add new joke success",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "user1",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\":\"POSTMAN\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}",
+									"host": [
+										"{{HOST}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get joke id 3 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0c25486a-0258-4e4e-8547-93c07b0097a1",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response _id should equal to 3\", function () {\r",
+											"    pm.expect(jsonData._id).to.eql(3)\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response created_by_user_id should equal to 2\", function () {\r",
+											"    pm.expect(jsonData.created_by_user_id).to.eql(2)\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response likes_by_user_ids array should empty\", function () {\r",
+											"    pm.expect(jsonData.likes_by_user_ids).to.eql([])\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/3",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown (delete created joke)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "username",
+										"value": "user1",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/3",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check no joke id 3 after teardown",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2283977f-5343-4e5e-840c-547e2ca32987",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"error\": \"Joke with id 3 not found!\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should equal to expected_response\", function () {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/3",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GET /:id (Get joke by id)",
+			"item": [
+				{
+					"name": "When I get one joke with _id 1, API should return joke with _id equals to 1",
+					"item": [
+						{
+							"name": "Get joke id 1 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5318b8ec-f1b9-4dbb-b5e0-63e6c6c31fb9",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response _id should be 1\", function() {\r",
+											"    pm.expect(jsonData._id).to.eql(1)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DELETE /:id  (Delete joke by id)",
+			"item": [
+				{
+					"name": "When admin which id is 1 delete joke which id is 2, if I get that joke, API should return not found",
+					"item": [
+						{
+							"name": "Get joke id 2 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bcacc04b-88b2-4048-98d5-9b45b4431c1d",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response _id should be 2\", function() {\r",
+											"    pm.expect(jsonData._id).to.eql(2)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/2",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete joke success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "124ab43d-4840-4b3b-8760-870e87819c41",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let expected_response = { status: 'Delete joke success' }\r",
+											"\r",
+											"pm.test(\"Response should equal to expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "username",
+										"value": "admin",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/2",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get joke id 2 notfound",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "27c753f5-a64a-4d25-9dbf-99c00f4da39b",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function() {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"let expected_response = { error: `Joke with id 2 not found!` }\r",
+											"\r",
+											"pm.test(\"Response should equal to expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/2",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "When user1 which id is 2 delete joke id 1 which not belong to user1, API should return error",
+					"item": [
+						{
+							"name": "Get joke id 1 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f00c4ee2-2a70-47d5-a8f9-4d8ca1899433",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response _id should be 1\", function() {\r",
+											"    pm.expect(jsonData._id).to.eql(1)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete joke fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5f763d62-6801-45b9-b53d-cce88a57a8af",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 404\", function() {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"let expected_response = { error: `This joke id 1 is not belong to you or not found` }\r",
+											"\r",
+											"pm.test(\"Response should equal to expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "username",
+										"type": "text",
+										"value": "user1"
+									},
+									{
+										"key": "password",
+										"type": "text",
+										"value": "password"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get joke id 1 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "764ceede-c79e-46ae-85ba-47e6776aaa26",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response _id should be 1\", function() {\r",
+											"    pm.expect(jsonData._id).to.eql(1)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST /:id/like (Like joke by id)",
+			"item": [
+				{
+					"name": "When admin like joke id 1, API should return success.",
+					"item": [
+						{
+							"name": "Like joke 1 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5717eda3-97c1-485d-a992-9c1fd2938bcb",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"status\": \"Like success\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "admin",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/like",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"like"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "When admin like joke id 1 again, API should return error.",
+					"item": [
+						{
+							"name": "Like joke 1 fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "12950369-96e3-42c8-9c43-2102136d9dd9",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 409\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"error\": \"You already like this joke (joke id 1)\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"type": "text",
+										"value": "admin"
+									},
+									{
+										"key": "password",
+										"type": "text",
+										"value": "password"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/like",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"like"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Teardown (dislike)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ccfde81a-d36d-40a7-b727-9e5672fa6c07",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"status\": \"Dislike success\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"type": "text",
+										"value": "admin"
+									},
+									{
+										"key": "password",
+										"type": "text",
+										"value": "password"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/dislike",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"dislike"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST /:id/dislike (Dislike joke by id)",
+			"item": [
+				{
+					"name": "When admin dislike joke id 1, API should return success",
+					"item": [
+						{
+							"name": "Setup (like)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cdc6e0e2-c66e-404b-be25-1b766c8a919c",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"status\": \"Like success\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "admin",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/like",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"like"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Dislike joke 1 success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9bcca1d8-d7cd-4256-b8d3-bb6737865720",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"status\": \"Dislike success\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "admin",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/dislike",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"dislike"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "When admin dislike joke id 1 again, API should return error.",
+					"item": [
+						{
+							"name": "Dislike joke 1 fail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0d3b2b06-2285-495a-9ae6-4f3095041e82",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 409\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"error\": \"You didn't like this joke (joke id 1)\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "admin",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST}}/1/dislike",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"1",
+										"dislike"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST /register",
+			"item": [
+				{
+					"name": "When user2 register, API should return success.",
+					"item": [
+						{
+							"name": "Register success",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cbaf01f1-9727-4cc5-8139-666a6046a110",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"status\": \"Register success\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user2\",\r\n    \"password\":\"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/register",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "When user2 register again, API should return error.",
+					"item": [
+						{
+							"name": "Register success Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cb29fb4b-e79c-4183-ace8-01bdac1d3b54",
+										"exec": [
+											"var jsonData = pm.response.json()\r",
+											"\r",
+											"pm.test(\"Status code is 409\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});\r",
+											"\r",
+											"let expected_response = {\r",
+											"    \"error\": \"Username already exists\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response should return expected_response\", function() {\r",
+											"    pm.expect(jsonData).to.eql(expected_response)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user2\",\r\n    \"password\":\"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/register",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
