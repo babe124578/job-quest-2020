@@ -41,8 +41,8 @@
   - Run on http://localhost or http://127.0.0.1 port 80
   - e.g. http://localhost/1
 - For on server
-  - Run on http://13.229.236.171 port 80
-  - e.g. http://13.229.236.171/1
+  - Run on http://54.169.76.253 port 80
+  - e.g. http://54.169.76.253/1
   - If cannot access it please contact me. (Maybe I just stop instance due to instance cost)
 - You can click on GET route to see example.
 - For other method please use `curl` or ` postman`
